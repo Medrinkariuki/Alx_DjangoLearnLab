@@ -1,0 +1,19 @@
+# Python cache
+__pycache__/
+*.py[cod]
+venv/
+# Database
+*.sqlite3
+
+# Virtual environment
+venv/
+django-models/venv/
+
+# IDE / system files
+*.idea/
+*.vscode/
+*.DS_Store
+*.log
+
+# Ignore everything else outside LibraryProject
+!django-models/LibraryProject/                                               
