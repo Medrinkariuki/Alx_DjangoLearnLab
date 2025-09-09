@@ -35,8 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',s
- 'LibraryProject.relationship_app',]
+    'django.contrib.staticfiles',
+    'relationship_app',]
 
 
 MIDDLEWARE = [

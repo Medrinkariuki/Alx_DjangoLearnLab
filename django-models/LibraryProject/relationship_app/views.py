@@ -1,14 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import DetailView
-from .models import Book, Library
+from .models import Book  # make sure this points to your Book model
 
-# Function-based view to list all books
 def list_books(request):
+    # Get all books
     books = Book.objects.all()
-    return render(request, 'list_books.html', {'books': books})
-
-# Class-based view to show details of a specific library
-class LibraryDetailView(DetailView):
-    model = Library
-    template_name = 'library_detail.html'
-    context_object_name = 'library'
+    
+    # Render the template at relationship_app/list_books.html
+    return render(request, "relationship_app/list_books.html", {"books": books})
