@@ -1,13 +1,11 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+rom django.shortcuts import render
 from django.views.generic import DetailView
 from .models import Book, Library
 
-# Function-based view (simple list of book titles and authors)
+# Function-based view (renders list_books.html)
 def book_list(request):
     books = Book.objects.all()
-    output = ", ".join([f"{book.title} by {book.author.name}" for book in books])
-    return HttpResponse(output)
+    return render(request, "relationship_app/list_books.html", {"books": books})
 
 # Class-based view (library detail with its books)
 class LibraryDetailView(DetailView):
@@ -17,5 +15,5 @@ class LibraryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["books"] = self.object.books.all()  # assuming related_name="books"
+        context["books"] = self.object.books.all()  # assuming related_name="books" in Book model
         return context
