@@ -1,6 +1,6 @@
-rom django.shortcuts import render
+from django.shortcuts import render
 from django.views.generic import DetailView
-from .models import Book, Library
+from .models import Book, Library  
 
 # Function-based view (renders list_books.html)
 def book_list(request):
@@ -15,5 +15,5 @@ class LibraryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["books"] = self.object.books.all()  # assuming related_name="books" in Book model
+        context["books"] = self.object.books.all() 
         return context
