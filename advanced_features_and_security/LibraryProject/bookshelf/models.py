@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import BaseUserManager
+from django.conf import settings
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
