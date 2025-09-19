@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$hp@c_dbve&q(wo3#8crz7^uqtzxu0fex)(1%ufde=kfy47%he'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'relationship_app',
+    'LibraryProject.bookshelf',
+    'accounts',
+    'csp',
 ]
 
 
@@ -49,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -69,6 +73,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'LibraryProject.wsgi.application'
+LOGIN_REDIRECT_URL = 'book_list'   # after login
+LOGOUT_REDIRECT_URL = 'login'      # after logout
 
 
 # Database
@@ -81,9 +87,30 @@ DATABASES = {
     }
 }
 
+# Use the custom user model
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Redirect all HTTP requests to HTTPS
+# This forces secure (HTTPS) connections for all views.
+SECURE_SSL_REDIRECT = True
+
+# If your Django site is behind a reverse proxy (nginx, load balancer),
+# ensure the proxy forwards the original scheme. Then use SECURE_PROXY_SSL_HEADER:
+# For example, nginx should set: proxy_set_header X-Forwarded-Proto $scheme;
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Browser security protections
+SECURE_BROWSER_XSS_FILTER = True          # Enables XSS filtering # Enables the browser’s built-in XSS protection
+X_FRAME_OPTIONS = 'DENY'                  # Prevent clickjacking # Prevents browsers from rendering pages in a frame (clickjacking protection)
+SECURE_CONTENT_TYPE_NOSNIFF = True        # Prevent MIME-type sniffing # Prevents the browser from MIME-sniffing (treating non-HTML files as HTML)
+
+# Cookies only over HTTPS
+CSRF_COOKIE_SECURE = True # Ensure CSRF cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -117,8 +144,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+AUTH_USER_MODEL = "bookshelf.CustomUser"
 
+# Environment toggle example (safe for dev):
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
+
+# Media files (uploaded files like profile photos)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+
+# Optional: HSTS (HTTP Strict Transport Security)
+SECURE_HSTS_SECONDS = 315336000                # Enforces that browsers only connect via HTTPS for the specified time (in seconds)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True   # Applies HSTS policy to all subdomains as well
+SECURE_HSTS_PRELOAD = True       # Allows the domain to be included in browsers' preloaded HSTS lists
+
+# Referrer policy to limit how much referrer information is sent
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
+# Trust the 'X-Forwarded-Proto' header set by the reverse proxy (e.g., Nginx/Heroku)
+# This ensures Django knows when a request was originally HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+SESSION_COOKIE_HTTPONLY = True   # reduces JavaScript access to session cookie
+# CSRF_COOKIE_HTTPONLY remains False by default to allow client-side frameworks to access CSRF token if needed.
+
+
+# Example CSP policy
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
+CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

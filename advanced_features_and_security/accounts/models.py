@@ -1,37 +1,19 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
 
 
 # Create your models here.
-# bookshelf/models.py
-class Book(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    publication_year = models.IntegerField()
-
-    def __str__(self):
-        return f"{self.title} ({self.publication_year}) by {self.author}"
-    
 class CustomUser(AbstractUser):
-    date_of_birth = models.DateField(null=True, blank=True)
-    profile_photo = models.ImageField(upload_to="profile_photos/", null=True, blank=True)
-
-    class Meta:
-        permissions = [
-            ("can_create", "Can create new objects"),
-            ("can_delete", "Can delete objects"),
-        ]
-class CustomUser(AbstractUser):
-    
-   # Custom user model that extends Django's AbstractUser.
-    #Adds date_of_birth and profile_photo.
-
+    """
+    Custom user model that extends Django's AbstractUser.
+    Adds date_of_birth and profile_photo.
+    """
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
-    objects = CustomUserManager()
+   # objects = CustomUserManager()
 
     def __str__(self):
         return self.username
