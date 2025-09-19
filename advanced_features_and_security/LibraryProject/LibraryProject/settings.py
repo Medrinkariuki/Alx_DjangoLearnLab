@@ -56,10 +56,24 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'LibraryProject.wsgi.application'
+LOGIN_REDIRECT_URL = 'book_list'   # after login
+LOGOUT_REDIRECT_URL = 'login'      # after logout
+
+
+# Use the custom user model
+AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+# Environment toggle example (safe for dev):
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
+
 
 
 # Database
-# Use SQLite for now
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -67,8 +81,19 @@ DATABASES = {
     }
 }
 
+# Browser security protections
+SECURE_BROWSER_XSS_FILTER = True          # Enables XSS filtering # Enables the browser’s built-in XSS protection
+X_FRAME_OPTIONS = 'DENY'                  # Prevent clickjacking # Prevents browsers from rendering pages in a frame (clickjacking protection)
+SECURE_CONTENT_TYPE_NOSNIFF = True        # Prevent MIME-type sniffing # Prevents the browser from MIME-sniffing (treating non-HTML files as HTML)
+
+# Cookies only over HTTPS
+CSRF_COOKIE_SECURE = True # Ensure CSRF cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+
 
 # Password validation
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -86,25 +111,43 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Africa/Nairobi'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
 
 
-# Static files
-STATIC_URL = '/static/'
-STATICFILES_DIRS =  [os.path.join(BASE_DIR, 'static')]
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-# Media files (for profile photos)
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+# Media files (uploaded files like profile photos)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
 # Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-# Custom user model
-AUTH_USER_MODEL = "accounts.CustomUser"
+# Optional: HSTS (HTTP Strict Transport Security)
+SECURE_HSTS_SECONDS = 31536000                # Enforces that browsers only connect via HTTPS for the specified time (in seconds)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True   # Applies HSTS policy to all subdomains as well
+SECURE_HSTS_PRELOAD = True       # Allows the domain to be included in browsers' preloaded HSTS lists
+
+# Example CSP policy
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
+CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
+
+# Trust the 'X-Forwarded-Proto' header set by the reverse proxy (e.g., Nginx/Heroku)
+# This ensures Django knows when a request was originally HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
