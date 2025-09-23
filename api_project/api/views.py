@@ -1,15 +1,19 @@
 # api/views.py
 
 from django.http import HttpResponse, JsonResponse
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, permissions
 from .models import Book
 from .serializers import BookSerializer
 
+# --------------------------
 # Homepage view
+# --------------------------
 def home(request):
     return HttpResponse("Welcome to API Project!")
 
+# --------------------------
 # Sample API endpoint
+# --------------------------
 def sample_api(request):
     data = {
         "message": "This is a sample API response",
@@ -17,16 +21,22 @@ def sample_api(request):
     }
     return JsonResponse(data)
 
-# DRF ListAPIView for books
+# --------------------------
+# ListAPIView for books
+# --------------------------
 class BookList(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]  # secured, optional
 
-# DRF ModelViewSet for full CRUD
+# --------------------------
+# Full CRUD BookViewSet
+# --------------------------
 class BookViewSet(viewsets.ModelViewSet):
     """
-    Handles CRUD operations for the Book model:
-    list, create, retrieve, update, destroy
+    Handles all CRUD operations for the Book model:
+    list, retrieve, create, update, delete
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]  # only logged-in users can access
