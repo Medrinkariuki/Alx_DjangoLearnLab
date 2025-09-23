@@ -1,7 +1,8 @@
 from django.urls import path
-from . import views
+from .views import home, sample_api, BookList
 
 urlpatterns = [
-    path('', views.home, name='home'),            # Homepage
-    path('api/sample/', views.sample_api, name='sample_api'),  # Sample API
+    path('', home, name='home'),
+    path('api/sample/', sample_api, name='sample_api'),
+    path('api/books/', BookList.as_view(), name='book_list'),
 ]
