@@ -16,13 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
-
-def home(request):
-    return HttpResponse("Welcome to the Advanced API Project 🚀")
 
 urlpatterns = [
-    path('', home, name='home'),  # root path
-    path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
+    path("admin/", admin.site.urls),
+    path("api/", include("api.urls")),   # include all API endpoints
 ]
