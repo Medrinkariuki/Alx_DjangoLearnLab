@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView  # only if you use redirect
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("api/", include("blog.urls")),  # 👈 add this line
+    path('admin/', admin.site.urls),
+    path('api/', include('blog.urls')),  # include your blog app URLs
+    path('', RedirectView.as_view(url='/posts/')),  # root URL redirect
 ]
-
