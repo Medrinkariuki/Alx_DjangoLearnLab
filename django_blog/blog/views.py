@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-from .models import Post, Comment, Tag
+from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
 
