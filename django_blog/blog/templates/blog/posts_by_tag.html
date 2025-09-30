@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head><title>Posts tagged: {{ tag_name }}</title></head>
+<body>
+  <h1>Posts tagged: {{ tag_name }}</h1>
+  {% include 'blog/post_list_content.html' %}  {# or copy post list markup #}
+  <p><a href="{% url 'post-list' %}">Back</a></p>
+</body>
+</html>

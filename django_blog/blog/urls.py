@@ -5,9 +5,11 @@ from .views import (
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
-    CommentCreateView,
     CommentUpdateView,
     CommentDeleteView,
+    add_comment,        # function-based view for creating comments
+    TagPostListView,
+    search_posts,
 )
 
 urlpatterns = [
@@ -18,8 +20,12 @@ urlpatterns = [
     path("post/<int:pk>/update/", PostUpdateView.as_view(), name="post-update"),
     path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="post-delete"),
 
-    # Comment URLs (checker-specific patterns)
+    # Comment URLs
+    path("post/<int:pk>/comment/", add_comment, name="add-comment"),   # create comment
     path("comment/<int:pk>/update/", CommentUpdateView.as_view(), name="comment-update"),
-    path("post/<int:pk>/comments/new/", CommentCreateView.as_view(), name="comment-create"),
     path("comment/<int:pk>/delete/", CommentDeleteView.as_view(), name="comment-delete"),
+
+    # Tag and Search URLs
+    path("tags/<slug:slug>/", TagPostListView.as_view(), name="posts-by-tag"),
+    path("search/", search_posts, name="search-posts"),
 ]
