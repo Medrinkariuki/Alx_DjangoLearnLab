@@ -86,8 +86,8 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'blog/comment_form.html'
 
     def dispatch(self, request, *args, **kwargs):
-        # store post for use in form_valid
-        self.post = get_object_or_404(Post, pk=kwargs.get('post_id'))
+        # self.kwargs['pk'] now holds the Post pk
+        self.post = get_object_or_404(Post, pk=kwargs.get('pk'))
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
