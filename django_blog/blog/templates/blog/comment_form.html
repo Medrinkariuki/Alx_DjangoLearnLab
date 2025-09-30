@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if object %}Edit Comment{% else %}New Comment{% endif %}</title>
+</head>
+<body>
+    <h1>{% if object %}Edit Comment{% else %}New Comment{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if object %}Update{% else %}Post{% endif %}</button>
+    </form>
+    <p><a href="{% url 'post-detail' object.post.pk %}">Back</a></p>
+</body>
+</html>
