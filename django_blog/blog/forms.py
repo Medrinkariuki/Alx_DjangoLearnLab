@@ -9,7 +9,8 @@ fields = ['title', 'content', 'tags']
 widgets = {
 'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter title'}),
 'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Write your post here...'}),
-'tags': TagWidget(attrs={'class': 'form-control', 'placeholder': 'Add tags separated by commas'}),
+# Keep attrs but ensure TagWidget() is visible
+'tags': TagWidget(),
 }
 
 class CommentForm(forms.ModelForm):
