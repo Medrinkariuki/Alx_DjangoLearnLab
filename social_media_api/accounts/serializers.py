@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'followers']
 
 class RegisterSerializer(serializers.ModelSerializer):
+    # Explicitly using serializers.CharField()
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
 
@@ -23,9 +24,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        # Remove password2 because the User model doesn't have it
         validated_data.pop('password2')
         user = get_user_model().objects.create_user(**validated_data)
-        # Create an auth token for the new user
         Token.objects.create(user=user)
         return user
