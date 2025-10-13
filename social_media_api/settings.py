@@ -49,7 +49,7 @@ MIDDLEWARE = [
 # -------------------------
 # Root URL
 # -------------------------
-ROOT_URLCONF = 'social_media_api_project.urls'
+ROOT_URLCONF = 'social_media_api.urls'
 
 # -------------------------
 # Templates
@@ -73,7 +73,7 @@ TEMPLATES = [
 # -------------------------
 # WSGI
 # -------------------------
-WSGI_APPLICATION = 'social_media_api_project.wsgi.application'
+WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
 # -------------------------
 # Database
